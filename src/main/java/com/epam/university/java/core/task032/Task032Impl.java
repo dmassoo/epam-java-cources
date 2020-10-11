@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 
 public class Task032Impl implements Task032 {
 
+
     /**
      * Create proxy wrapper.
      *
@@ -11,7 +12,7 @@ public class Task032Impl implements Task032 {
      */
     @Override
     public CountingProxy createProxyWrapper() {
-        return new CountingProxyImpl();
+        return new CountingProxyImpl(new SomeActionExecutorImpl());
     }
 
     /**
@@ -22,16 +23,9 @@ public class Task032Impl implements Task032 {
      */
     @Override
     public SomeActionExecutor createExecutorWithProxy(CountingProxy proxy) {
-        return new SomeActionExecutor() {
-            @Override
-            public void doAction() {
-
-            }
-
-            @Override
-            public void doAnotherAction() {
-
-            }
-        };
+        if (proxy == null) {
+            throw new IllegalArgumentException();
+        }
+        return new SomeActionExecutorWithProxy(new SomeActionExecutorImpl());
     }
 }

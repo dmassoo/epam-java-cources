@@ -4,11 +4,11 @@ import java.lang.reflect.Method;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.HashMap;
 
-public class CountingProxyImpl implements CountingProxy {
+public class SomeActionExecutorWithProxy implements SomeActionExecutor, CountingProxy{
     private SomeActionExecutor executor;
     private HashMap<String, Integer> map;
     private Method[] methods;
-    public CountingProxyImpl(SomeActionExecutor executor) {
+    public SomeActionExecutorWithProxy(SomeActionExecutor executor) {
         this.map = new HashMap<>();
         this.executor = executor;
         this.methods = executor.getClass().getMethods();
@@ -25,6 +25,22 @@ public class CountingProxyImpl implements CountingProxy {
     @Override
     public int getInvocationsCount(String methodName) {
         return map.get(methodName);
+    }
+
+    /**
+     * Do the action, not important for us.
+     */
+    @Override
+    public void doAction() {
+
+    }
+
+    /**
+     * Do another action, not important for us.
+     */
+    @Override
+    public void doAnotherAction() {
+
     }
 
     /**
@@ -84,7 +100,4 @@ public class CountingProxyImpl implements CountingProxy {
         return method.invoke(proxy);
     }
 
-    public SomeActionExecutor getExecutor() {
-        return executor;
-    }
 }

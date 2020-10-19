@@ -1,5 +1,7 @@
 package com.epam.university.java.core.task013;
 
+import com.epam.university.java.core.task015.Point;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,7 +51,7 @@ public class Task013Impl implements Task013 {
         List<Vertex> vertices = new LinkedList<>(
                 Arrays.asList(figure.getVertexes().toArray(new Vertex[0])));
         Vertex left = vertices.get(0);
-        //find the most left and low vertice
+        //find the most left and low vertex
         for (Vertex vertex : vertices) {
             if (vertex.getX() <= left.getX() && vertex.getY() <= left.getY()) {
                 left = vertex;
@@ -61,12 +63,21 @@ public class Task013Impl implements Task013 {
         vertices.sort(new Comparator<Vertex>() {
             @Override
             public int compare(Vertex o1, Vertex o2) {
-                double tg1 = ((double) (o1.getY() - actuallyLeft.getY())) /
-                        ((double) (o1.getX() - actuallyLeft.getX()));
-                double tg2 = ((double) (o2.getY() - actuallyLeft.getY())) /
-                        ((double) (o2.getX() - actuallyLeft.getX()));
-
-                //TODO: if tgs are equal then compare by distance from the left
+                double tg1 = ((double) (o1.getY() - actuallyLeft.getY()))
+                        / ((double) (o1.getX() - actuallyLeft.getX()));
+                double tg2 = ((double) (o2.getY() - actuallyLeft.getY()))
+                        / ((double) (o2.getX() - actuallyLeft.getX()));
+                if (tg1 == 0 && tg2 == 0) {
+                    double d1 = distance(actuallyLeft, o1);
+                    double d2 = distance(actuallyLeft, o2);
+                    if (d1 > d2) {
+                        return -1;
+                    } else if (d1 < d2) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
                 if (tg1 > tg2) {
                     return -1;
                 } else if (tg2 == tg1) {
@@ -85,31 +96,50 @@ public class Task013Impl implements Task013 {
             }
         });
         vertices.add(0, left);
-        //check convex using vector product
-        //TODO: if was zero then any sign is ok
-        int signum = 0;
-        for (int i = 0; i < vertices.size() - 1; i++) {
-            int currentProduct = product(vertices.get(i), vertices.get(i + 1));
-            if (Integer.signum(currentProduct) != 0) {
-                signum = Integer.signum(currentProduct);
-                break;
+        boolean getPositive = false;
+        boolean getNegative = false;
+        for (int i = 0; i < vertices.size() - 2; i++) {
+            Vertex v0 = vertices.get(i);
+            Vertex v1 = vertices.get(i + 1);
+            Vertex v2 = vertices.get(i + 2);
+            if (product(v0, v1, v2) > 0) {
+                getPositive = true;
             }
-        }
-        int currentProduct;
-        for (int i = 0; i < vertices.size() - 1; i++) {
-             currentProduct = product(vertices.get(i), vertices.get(i + 1));
-            if (Integer.signum(currentProduct) != 0 && Integer.signum(currentProduct) != signum) {
+            if (product(v0, v1, v2) < 0) {
+                getNegative = true;
+            }
+            if (getPositive && getNegative) {
                 return false;
             }
-
         }
         return true;
     }
 
-    private int product(Vertex v1, Vertex v2) {
+    /**
+     * Cross Product of two 2-dim vectors.
+     *
+     * @param p1 beginning of the first vector
+     * @param p2 end of the first and beginning of the second one
+     * @param p3 end of the second vector
+     * @return value of cross product
+     */
+    private double product(Vertex p1, Vertex p2, Vertex p3) {
+        int x1 = p2.getX() - p1.getX();
+        int y1 = p2.getY() - p1.getY();
+        Vertex v1 = new VertexImpl(x1, y1);
+        int x2 = p3.getX() - p2.getX();
+        int y2 = p3.getY() - p2.getY();
+        Vertex v2 = new VertexImpl(x2, y2);
         return v1.getX() * v2.getY() - v1.getY() * v2.getX();
     }
 
+    /**
+     * Calculates distance between to vertices.
+     *
+     * @param from first vertex
+     * @param to second vertex
+     * @return distance
+     */
     private double distance(Vertex from, Vertex to) {
         return Math.sqrt(Math.pow(to.getX() - from.getX(), 2)
                 + Math.pow(to.getY() - from.getY(), 2));

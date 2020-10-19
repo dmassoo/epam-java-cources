@@ -5,10 +5,18 @@ import java.util.Comparator;
 public class VertexImpl implements Vertex {
     int x;
     int y;
+
+    /**
+     * Constructor.
+     *
+     * @param x - coordinate
+     * @param y - coordinate
+     */
     public VertexImpl(int x, int y) {
         this.x = x;
         this.y = y;
     }
+
     /**
      * Get x coordinate of vertex.
      *
@@ -48,14 +56,6 @@ public class VertexImpl implements Vertex {
     public void setY(int value) {
         y = value;
     }
-
-    public static final Comparator<VertexImpl> tgComparator = new Comparator<>() {
-        @Override
-        public int compare(VertexImpl o1, VertexImpl o2) {
-            return Integer.compare(o1.x, o2.x);
-        }
-    };
-
 }
 
 

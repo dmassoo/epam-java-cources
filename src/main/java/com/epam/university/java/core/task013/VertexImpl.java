@@ -49,7 +49,7 @@ public class VertexImpl implements Vertex {
         y = value;
     }
 
-    public static final Comparator<VertexImpl> xComparator = new Comparator<>() {
+    public static final Comparator<VertexImpl> tgComparator = new Comparator<>() {
         @Override
         public int compare(VertexImpl o1, VertexImpl o2) {
             return Integer.compare(o1.x, o2.x);

@@ -2,9 +2,10 @@ package com.epam.university.java.core.task013;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class FigureImpl implements Figure {
-    ArrayList<Vertex> vertices = new ArrayList<>();
+    List<Vertex> vertices = new ArrayList<>();
     int verticeCount = vertices.size();
 
     /**

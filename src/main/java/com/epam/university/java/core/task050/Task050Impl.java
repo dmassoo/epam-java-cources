@@ -25,6 +25,15 @@ public class Task050Impl implements Task050 {
         return knapsack(size, weights, costs, weights.length);
     }
 
+    /**
+     * Helper method.
+     *
+     * @param capacity of the sack
+     * @param weights of items
+     * @param costs of items
+     * @param n number of items
+     * @return max value that we can carry in the sack.
+     */
     private double knapsack(double capacity, Double[] weights, Double[] costs, int n) {
         if (n == 0 || capacity == 0) {
             return 0;

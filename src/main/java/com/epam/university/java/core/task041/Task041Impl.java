@@ -43,7 +43,12 @@ public class Task041Impl implements Task041 {
         if (collection == null || entity == null) {
             throw new IllegalArgumentException();
         }
-        return entity;
+        for (Entity en : collection) {
+            if (en.getId() == entity.getId()) {
+                return en;
+            }
+        }
+        throw new IllegalArgumentException();
     }
 
     /**
@@ -60,8 +65,7 @@ public class Task041Impl implements Task041 {
         }
         for (Entity en : collection) {
             if (en.getId() == entity.getId()) {
-//                delete(collection, en);
-//                create(collection, entity.getValue());
+                collection.remove(en);
                 en = new Entity() {
                     @Override
                     public int getId() {
@@ -73,6 +77,7 @@ public class Task041Impl implements Task041 {
                         return value;
                     }
                 };
+                collection.add(en);
                 return;
             }
         }
@@ -86,14 +91,10 @@ public class Task041Impl implements Task041 {
      * @param entity     to be deleted.
      */
     @Override
-    public void delete(Collection<Entity> collection, Entity entity) {
+    public synchronized void delete(Collection<Entity> collection, Entity entity) {
         if (collection == null || entity == null) {
             throw new IllegalArgumentException();
         }
-        for (Entity en : collection) {
-            if (en.getId() == entity.getId()) {
-                collection.remove(en);
-            }
-        }
+        collection.remove(entity);
     }
 }

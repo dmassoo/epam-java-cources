@@ -3,17 +3,19 @@ package com.epam.university.java.core.task032;
 import java.lang.reflect.Method;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.HashMap;
+import java.util.Map;
 
 public class CountingProxyImpl implements CountingProxy {
-    private SomeActionExecutor executor;
-    private HashMap<String, Integer> map;
-    private Method[] methods;
-    public CountingProxyImpl(SomeActionExecutor executor) {
-        this.map = new HashMap<>();
-        this.executor = executor;
-        this.methods = executor.getClass().getMethods();
-        for (Method method : this.methods) {
-            this.map.put(method.getName(), 0);
+    private final Map<String, Method> methods = new HashMap<>();
+    private final Map<String, Integer> counts = new HashMap<>();
+    private Object target;
+
+    public CountingProxyImpl(Object target) {
+        this.target = target;
+
+        for(Method method: target.getClass().getDeclaredMethods()) {
+            this.methods.put(method.getName(), method);
+            this.counts.put(method.getName(), 0);
         }
     }
     /**
@@ -24,7 +26,7 @@ public class CountingProxyImpl implements CountingProxy {
      */
     @Override
     public int getInvocationsCount(String methodName) {
-        return map.get(methodName);
+        return counts.get(methodName);
     }
 
     /**
@@ -74,17 +76,9 @@ public class CountingProxyImpl implements CountingProxy {
      */
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-
-        for (Method meth : methods) {
-            if (method.equals(meth)) {
-                map.put(method.getName(), map.get(method.getName()) + 1);
-            }
-        }
-
-        return method.invoke(proxy);
-    }
-
-    public SomeActionExecutor getExecutor() {
-        return executor;
+        int currentNumberOfInvocations = counts.get(method.getName());
+        counts.put(method.getName(), currentNumberOfInvocations + 1);
+        Object result = methods.get(method.getName()).invoke(target, args);
+        return result;
     }
 }

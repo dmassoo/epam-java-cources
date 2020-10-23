@@ -1,6 +1,8 @@
 package com.epam.university.java.core.task032;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.Map;
 
 public class Task032Impl implements Task032 {
 
@@ -12,7 +14,17 @@ public class Task032Impl implements Task032 {
      */
     @Override
     public CountingProxy createProxyWrapper() {
-        return new CountingProxyImpl(new SomeActionExecutorImpl());
+        return new CountingProxyImpl(new SomeActionExecutor() {
+            @Override
+            public void doAction() {
+
+            }
+
+            @Override
+            public void doAnotherAction() {
+
+            }
+        });
     }
 
     /**
@@ -26,6 +38,6 @@ public class Task032Impl implements Task032 {
         if (proxy == null) {
             throw new IllegalArgumentException();
         }
-        return new SomeActionExecutorWithProxy(new SomeActionExecutorImpl());
+        return (SomeActionExecutor) ((CountingProxyImpl) proxy).target;
     }
 }

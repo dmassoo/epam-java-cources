@@ -26,7 +26,7 @@ public class Task034Test {
     public void readWithSaxParser() throws Exception {
         final Person person = instance.readWithSaxParser(
                 saxHandler,
-                "/task034/data.xml"
+                "src/main/resources/task034/data.xml"
         );
         assertNotNull("XML was not parsed", person);
         assertEquals("Incorrect XML parsing",

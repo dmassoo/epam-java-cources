@@ -5,8 +5,6 @@ import java.lang.reflect.Proxy;
 import java.util.Map;
 
 public class Task032Impl implements Task032 {
-
-
     /**
      * Create proxy wrapper.
      *
@@ -38,6 +36,18 @@ public class Task032Impl implements Task032 {
         if (proxy == null) {
             throw new IllegalArgumentException();
         }
-        return (SomeActionExecutor) ((CountingProxyImpl) proxy).target;
+        SomeActionExecutor executor = (SomeActionExecutor)
+                ((CountingProxyImpl) proxy).getInstance(new SomeActionExecutor() {
+                    @Override
+                    public void doAction() {
+
+                    }
+
+                    @Override
+                    public void doAnotherAction() {
+
+                    }
+                });
+        return executor;
     }
 }

@@ -1,8 +1,31 @@
 package com.epam.university.java.core.task034;
 
-public class PhoneNumberImpl implements PhoneNumber {
-    String phoneNumber;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlValue;
 
+@XmlRootElement(name = "person-phone")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class PhoneNumberImpl implements PhoneNumber {
+    @XmlValue
+    private String phoneNumber;
+
+    /**
+     * Default constructor.
+     *
+     */
+    public PhoneNumberImpl() {}
+
+    /**
+     * Constructor.
+     *
+     * @param phoneNumber number
+     */
+    public PhoneNumberImpl(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
     /**
      * Get phone number value.
      *

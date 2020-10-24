@@ -1,12 +1,42 @@
 package com.epam.university.java.core.task034;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 
+@XmlRootElement(name = "person")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class PersonImpl implements Person {
-    int id;
-    String firstName;
-    String lastName;
-    Collection<PhoneNumber> phoneNumbers;
+    @XmlAttribute(name = "id")
+    private int id;
+
+    @XmlElement(name = "first-name")
+    private String firstName;
+
+    @XmlElement(name = "last-name")
+    private String lastName;
+
+    @XmlElementWrapper(name = "person-phones")
+    @XmlElements({@XmlElement(type = PhoneNumberImpl.class, name = "person-phone")})
+    private Collection<PhoneNumber> phoneNumbers;
+
+    public PersonImpl() {
+    }
+
+    public PersonImpl(int id, String firstName, String lastName,
+                      Collection<PhoneNumberImpl> phoneNumbers) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumbers = new ArrayList<>(phoneNumbers);
+    }
 
     /**
      * Get person id.

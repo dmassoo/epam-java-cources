@@ -13,8 +13,6 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.stream.XMLStreamReader;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.List;
 
 public class Task034Impl implements Task034 {
     /**

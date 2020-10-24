@@ -17,7 +17,8 @@ public interface Task034 {
      * @param filepath path to file with xml
      * @return parsed data
      */
-    Person readWithSaxParser(DefaultHandler handler, String filepath) throws ParserConfigurationException, SAXException, IOException;
+    Person readWithSaxParser(DefaultHandler handler, String filepath)
+            throws ParserConfigurationException, SAXException, IOException;
 
     /**
      * Parse XML document with JAXB parser.

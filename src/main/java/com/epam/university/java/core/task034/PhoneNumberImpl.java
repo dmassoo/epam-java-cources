@@ -25,6 +25,7 @@ public class PhoneNumberImpl implements PhoneNumber {
     public PhoneNumberImpl(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
     /**
      * Get phone number value.
      *

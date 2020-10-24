@@ -64,17 +64,20 @@ public class SaxHandlerImpl extends SaxHandler {
      * @see ContentHandler#startElement
      */
     @Override
-    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+    public void startElement(String uri, String localName, String qName, Attributes attributes)
+            throws SAXException {
         switch (qName) {
             case PERSON:
                 person.setId(Integer.parseInt(attributes.getValue("id")));
+                break;
             case PHONE_NUMBERS:
                 person.setPhoneNumbers(new ArrayList<>());
                 break;
             case PHONE_NUMBER:
                 person.getPhoneNumbers().add(new PhoneNumberImpl());
                 break;
-
+            default:
+                break;
         }
     }
 
@@ -109,6 +112,9 @@ public class SaxHandlerImpl extends SaxHandler {
                 break;
             case PHONE_NUMBER:
                 latestPhoneNumber().setPhoneNumber(elementValue);
+                break;
+            default:
+                break;
         }
     }
 

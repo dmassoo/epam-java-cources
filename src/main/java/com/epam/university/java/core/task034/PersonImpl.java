@@ -29,6 +29,14 @@ public class PersonImpl implements Person {
     public PersonImpl() {
     }
 
+    /**
+     * Constructor.
+     *
+     * @param id id
+     * @param firstName first name
+     * @param lastName last name
+     * @param phoneNumbers phone numbers
+     */
     public PersonImpl(int id, String firstName, String lastName,
                       Collection<PhoneNumberImpl> phoneNumbers) {
         this.id = id;

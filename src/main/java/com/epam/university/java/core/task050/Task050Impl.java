@@ -1,7 +1,10 @@
 package com.epam.university.java.core.task050;
 
+
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class Task050Impl implements Task050 {
     /**
@@ -16,35 +19,29 @@ public class Task050Impl implements Task050 {
         if (size == 0 || items == null) {
             throw new IllegalArgumentException();
         }
-        final Set<Double> doubles = items.keySet();
-        Double[] costs = doubles.toArray(new Double[0]);
-        Double[] weights = new Double[costs.length];
-        for (int i = 0; i < weights.length; i++) {
-            weights[i] = items.get(costs[i]);
+        //key is cost, value is weight
+        Map<Double, Double> unitCosts = new HashMap<>();
+        for (Map.Entry<Double, Double> item : items.entrySet()) {
+            Double unitCost = item.getKey() / item.getValue();
+            unitCosts.put(unitCost, item.getValue());
         }
-        return knapsack(size, weights, costs, weights.length);
-    }
-
-    /**
-     * Helper method.
-     *
-     * @param capacity of the sack
-     * @param weights of items
-     * @param costs of items
-     * @param n number of items
-     * @return max value that we can carry in the sack.
-     */
-    private double knapsack(double capacity, Double[] weights, Double[] costs, int n) {
-        if (n == 0 || capacity == 0) {
-            return 0;
+        //sored set of unit costs.
+        SortedSet<Double> costs = new TreeSet<>(unitCosts.keySet()).descendingSet();
+        double currentSize = 0;
+        double value = 0;
+        //iterating over sorted by desc set of (C/W)s.
+        for (Double cost : costs) {
+            if (currentSize >= size) {
+                break;
+            }
+            if (currentSize + unitCosts.get(cost) <= size) {
+                currentSize += unitCosts.get(cost);
+                value += (double) Math.round(unitCosts.get(cost) * cost * 1000d) / 1000d;
+            } else {
+                value += (double) Math.round(cost * (size - currentSize) * 1000d) / 1000d;
+                break;
+            }
         }
-        if (weights[n - 1] > capacity){
-            return knapsack(capacity, weights, costs, n - 1);
-        } else {
-            return Math.max(
-                    costs[n - 1]
-                            + knapsack(capacity - weights[n - 1], weights, costs, n - 1),
-                    knapsack(capacity, weights, costs, n - 1));
-        }
+        return value;
     }
 }

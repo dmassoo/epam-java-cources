@@ -5,9 +5,11 @@ import java.util.List;
 public class Task042Impl implements Task042 {
     @Override
     public BookingResponse checkAvailability(List<String> schedule, String currentTime) {
+        //handling nulls
         if (schedule == null || currentTime == null) {
             throw new IllegalArgumentException();
         }
+        //handling empty lists
         if (schedule.size() == 0) {
             if (parseTime(currentTime) >= parseTime("18:00")) {
                 return new BusyResponse();
@@ -19,6 +21,7 @@ public class Task042Impl implements Task042 {
                 return new AvailableResponse();
             }
         }
+        //TODO: here should be code to process non-empty Lists
         return null;
     }
 

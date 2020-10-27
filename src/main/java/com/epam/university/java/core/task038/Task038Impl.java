@@ -13,7 +13,9 @@ public class Task038Impl  implements Task038 {
      */
     @Override
     public Graph invokeActions(Graph sourceGraph, Collection<GraphAction> actions) {
-        return null;
+        for (GraphAction action : actions) {
+            action.run(sourceGraph);
+        }
     }
 
     /**

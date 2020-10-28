@@ -29,16 +29,16 @@ public class Task038Impl implements Task038 {
     }
 
     /**
-     * Find the path with minimum possible sum of its edges weights.
-     * Path must contain source and target vertex.
-     * If path doesn't exist, return empty collection.
-     *
-     * @param graph   graph instance
-     * @param startId is id of source vertex
-     * @param endId   is id of target vertex
-     * @return collection of vertices from source to target with minimum
-     * possible sum of edge weights.
-     */
+    * Find the path with minimum possible sum of its edges weights.
+    * Path must contain source and target vertex.
+    * If path doesn't exist, return empty collection.
+    *
+    * @param graph   graph instance
+    * @param startId is id of source vertex
+    * @param endId   is id of target vertex
+    * @return collection of vertices from source to target with minimum
+    *     possible sum of edge weights.
+    */
     @Override
     public Collection<Vertex> getShortestPath(Graph graph, int startId, int endId) {
         return dijkstra((GraphImpl) graph, startId, endId);
@@ -51,9 +51,9 @@ public class Task038Impl implements Task038 {
         return distance;
     }
 
-    private Vertex getClosestVertex(Vertex start, Set<Vertex> B) {
-        Iterator<Vertex> iterator = B.iterator();
-        Vertex closestVertex = B.iterator().next();
+    private Vertex getClosestVertex(Vertex start, Set<Vertex> setOfUnprocessed) {
+        Iterator<Vertex> iterator = setOfUnprocessed.iterator();
+        Vertex closestVertex = setOfUnprocessed.iterator().next();
         double minDistance = distanceBetweenVertices(start, closestVertex);
         while (iterator.hasNext()) {
             Vertex currentVertex = iterator.next();
@@ -72,20 +72,20 @@ public class Task038Impl implements Task038 {
         if (startId == endId) {
             return new ArrayList<>();
         }
-        Set<Vertex> A = new HashSet<>();
-        Set<Vertex> B = new HashSet<>();
+        Set<Vertex> setOfProcessed = new HashSet<>();
+        Set<Vertex> setOfUnprocessed = new HashSet<>();
         Map<Vertex, Double> distances = new HashMap<>();
-        Map<Vertex, Vertex> Ps = new HashMap<>();
+        Map<Vertex, Vertex> ancestors = new HashMap<>();
         //initializing sets and map
         Vertex startVertex = null;
         Vertex endVertex = null;
         for (Vertex v : graph.getVertices()) {
             if (v.getId() == startId) {
                 startVertex = v;
-                A.add(v);
+                setOfProcessed.add(v);
                 distances.put(startVertex, 0.0);
             } else {
-                B.add(v);
+                setOfUnprocessed.add(v);
                 distances.put(v, Double.MAX_VALUE);
                 if (v.getId() == endId) {
                     endVertex = v;
@@ -93,16 +93,20 @@ public class Task038Impl implements Task038 {
             }
         }
         // is startId is invalid
-        if (A.isEmpty()) {
+        if (setOfProcessed.isEmpty()) {
             throw new IllegalArgumentException("There is no vertex with such id");
         }
         // dijkstra's algorithm
-
         for (Vertex v : graph.getAdjustments().get(startVertex)) {
-            Ps.put(v, startVertex);
+            ancestors.put(v, startVertex);
         }
-        while (!B.isEmpty()) {
-            Vertex closest = getClosestVertex(startVertex, B);
+        //if vertex we start from has no adjustment vertices
+        //we can't reach any other vertex
+        if (ancestors.isEmpty()) {
+            return new ArrayList<>();
+        }
+        while (!setOfUnprocessed.isEmpty()) {
+            Vertex closest = getClosestVertex(startVertex, setOfUnprocessed);
             distances.put(closest, distanceBetweenVertices(startVertex, closest));
             for (Vertex u : graph.getAdjustments().get(closest)) {
                 if (distances.get(u) > distances.get(closest)
@@ -110,22 +114,22 @@ public class Task038Impl implements Task038 {
                     Double currentDistance = Math.min(distances.get(u),
                             distances.get(closest) + distanceBetweenVertices(u, closest));
                     distances.put(u, currentDistance);
-                    Ps.put(u, closest);
+                    ancestors.put(u, closest);
                 }
             }
-            A.add(closest);
-            B.remove(closest);
+            setOfProcessed.add(closest);
+            setOfUnprocessed.remove(closest);
         }
         //restoring the path
         List<Vertex> pathReversed = new ArrayList<>();
         Vertex currentAncestor = endVertex;
         pathReversed.add(endVertex);
-        for (Map.Entry e : Ps.entrySet()) {
-            currentAncestor = Ps.get(currentAncestor);
+        for (Map.Entry e : ancestors.entrySet()) {
+            currentAncestor = ancestors.get(currentAncestor);
+            pathReversed.add(currentAncestor);
             if (currentAncestor == null) {
                 return new ArrayList<>();
             }
-            pathReversed.add(currentAncestor);
             if (currentAncestor.getId() == startId) {
                 break;
             }

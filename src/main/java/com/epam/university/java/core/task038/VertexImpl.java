@@ -8,11 +8,19 @@ public class VertexImpl implements Vertex {
     private int x;
     private int y;
 
+    /**
+     * Constructor.
+     *
+     * @param id id
+     * @param x x - coordinate
+     * @param y y - coordinate
+     */
     public VertexImpl(int id, int x, int y) {
         this.id = id;
         this.x = x;
         this.y = y;
     }
+
     /**
      * Get id of vertex.
      *

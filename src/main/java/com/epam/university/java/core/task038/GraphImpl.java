@@ -11,11 +11,17 @@ public class GraphImpl implements Graph {
     private List<Vertex> vertices;
     private Map<Vertex, List<Vertex>> adjustments;
 
+    /**
+     * Comstructor.
+     *
+     * @param size number of vertices
+     */
     public GraphImpl(int size) {
         this.size = size;
         vertices = new ArrayList<>();
         adjustments = new HashMap<>();
     }
+
     /**
      * Create vertex with given id, x and y coordinates.
      *

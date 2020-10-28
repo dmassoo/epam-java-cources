@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 public class GraphImpl implements Graph {
-    int size;
-    List<Vertex> vertices;
-    Map<Vertex, List<Vertex>> adjustments;
+    private int size;
+    private List<Vertex> vertices;
+    private Map<Vertex, List<Vertex>> adjustments;
 
     public GraphImpl(int size) {
         this.size = size;
@@ -25,7 +25,9 @@ public class GraphImpl implements Graph {
      */
     @Override
     public void createVertex(int id, int x, int y) {
-        adjustments.put(new VertexImpl(id, x, y), new ArrayList<>());
+        Vertex v = new VertexImpl(id, x, y);
+        vertices.add(v);
+        adjustments.put(v, new ArrayList<>());
     }
 
     /**
@@ -52,5 +54,29 @@ public class GraphImpl implements Graph {
         List fromAdjs = adjustments.get(from);
         fromAdjs.add(to);
         adjustments.put(from, fromAdjs);
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public List<Vertex> getVertices() {
+        return vertices;
+    }
+
+    public void setVertices(List<Vertex> vertices) {
+        this.vertices = vertices;
+    }
+
+    public Map<Vertex, List<Vertex>> getAdjustments() {
+        return adjustments;
+    }
+
+    public void setAdjustments(Map<Vertex, List<Vertex>> adjustments) {
+        this.adjustments = adjustments;
     }
 }

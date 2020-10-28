@@ -122,6 +122,9 @@ public class Task038Impl implements Task038 {
         pathReversed.add(endVertex);
         for (Map.Entry e : Ps.entrySet()) {
             currentAncestor = Ps.get(currentAncestor);
+            if (currentAncestor == null) {
+                return new ArrayList<>();
+            }
             pathReversed.add(currentAncestor);
             if (currentAncestor.getId() == startId) {
                 break;

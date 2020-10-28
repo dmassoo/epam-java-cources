@@ -48,10 +48,7 @@ public class GraphImpl implements Graph {
                 to = v;
             }
         }
-        List toAdjs = adjustments.get(to);
-        toAdjs.add(from);
-        adjustments.put(to, toAdjs);
-        List fromAdjs = adjustments.get(from);
+        List<Vertex> fromAdjs = adjustments.get(from);
         fromAdjs.add(to);
         adjustments.put(from, fromAdjs);
     }

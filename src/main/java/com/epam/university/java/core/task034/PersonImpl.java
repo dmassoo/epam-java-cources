@@ -1,5 +1,11 @@
 package com.epam.university.java.core.task034;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
+import com.google.gson.annotations.SerializedName;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -10,18 +16,24 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Collection;
 
+@JsonAutoDetect
 @XmlRootElement(name = "person")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PersonImpl implements Person {
+    @JsonProperty("id")
     @XmlAttribute(name = "id")
     private int id;
 
+    @JsonProperty("firstName")
     @XmlElement(name = "first-name")
     private String firstName;
 
+    @JsonProperty("lastName")
     @XmlElement(name = "last-name")
     private String lastName;
 
+    @JsonProperty("phones")
+    @SerializedName("phones")
     @XmlElementWrapper(name = "person-phones")
     @XmlElements({@XmlElement(type = PhoneNumberImpl.class, name = "person-phone")})
     private Collection<PhoneNumber> phoneNumbers;
@@ -37,8 +49,11 @@ public class PersonImpl implements Person {
      * @param lastName last name
      * @param phoneNumbers phone numbers
      */
-    public PersonImpl(int id, String firstName, String lastName,
-                      Collection<PhoneNumberImpl> phoneNumbers) {
+    @JsonCreator
+    public PersonImpl(@JsonProperty(value = "id") int id,
+                      @JsonProperty(value = "firstName") String firstName,
+                      @JsonProperty(value = "lastName") String lastName,
+                      @JsonProperty(value = "phones") Collection<PhoneNumberImpl> phoneNumbers) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

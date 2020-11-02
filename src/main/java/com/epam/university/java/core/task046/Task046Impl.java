@@ -20,20 +20,45 @@ public class Task046Impl implements Task046 {
         for (int i = 0; i < n; i++) {
             numbers[i] = i;
         }
-        return null;
+        combinations(n, k, combinations);
+        return combinations;
     }
 
-    private void combinationUtil(List<String> combinations, int n, int k, int i, int[] curComb) {
-        if (i == k) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int j = 0; j < curComb.length; j++) {
-                stringBuilder.append(curComb[j]);
+    private void combinations(Integer n, Integer k, List<String> combinations) {
+        int i;
+        int p;
+        int[] arr = new int[k];
+        for (i = 0; i < k; i++) {
+            arr[i] = i;
+        }
+        while (true) {
+            String combination = "";
+            for (i = 0; i < k; i++) {
+                combination += arr[i];
+                if (i == k - 1) {
+                    continue;
+                }
+                combination += " ";
             }
-            combinations.add(stringBuilder.toString());
+            combinations.add(combination);
+            if (arr[k - 1] < n - 1) {
+                arr[k - 1]++;
+            } else {
+                for (p = k - 1; p > 0; p--) {
+                    if (arr[p] - arr[p - 1] > 1) {
+                        break;
+                    }
+                }
+                if (p == 0) {
+                    break;
+                }
+                arr[p - 1]++;
+                for (i = p; i < k; i++) {
+                    arr[i] = arr[i - 1] + 1;
+                }
+            }
         }
-        if (i >= n) {
-            return;
-        }
-
     }
 }
+
+

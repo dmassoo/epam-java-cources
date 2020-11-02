@@ -2,8 +2,8 @@ package com.epam.university.java.core.task053;
 
 import java.util.ArrayList;
 
-public class IntToPost {
-    private StackX stackX;
+public class InfToPost {
+    private StackX<String> stackX;
     private String input;
     private ArrayList<String> output;
 
@@ -12,13 +12,18 @@ public class IntToPost {
      *
      * @param input is input string
      */
-    public IntToPost(String input) {
+    public InfToPost(String input) {
         this.input = input;
         int stackSize = input.length();
-        stackX = new StackX(stackSize);
+        stackX = new StackX<String>(stackSize);
         output = new ArrayList<>();
     }
 
+    /**
+     * Method to convert math expression in string format to postfix form.
+     *
+     * @return postfix form of the expression
+     */
     public ArrayList<String> toPostfix() {
         String operators = "()^+-*/";
         for (int j = 0; j < input.length(); j++) {
@@ -36,7 +41,7 @@ public class IntToPost {
                     d = Character.toString(input.charAt(j + 1));
                 }
             }
-            switch(e) {
+            switch (e) {
                 case "+":
                 case "-":
                     gotOperator(e, 1);
@@ -52,7 +57,7 @@ public class IntToPost {
                     stackX.push(e);
                     break;
                 case ")":
-                    gotParen(e);
+                    gotParen();
                     break;
                 default:
                     output.add(e);
@@ -65,6 +70,12 @@ public class IntToPost {
         return output;
     }
 
+    /**
+     * Method to handle operators in the input string.
+     *
+     * @param opThis operator that we just reach.
+     * @param prec1 priority of this operator.
+     */
     public void gotOperator(String opThis, int prec1) {
         while (!stackX.isEmpty()) {
             String opTop = stackX.pop();
@@ -73,9 +84,8 @@ public class IntToPost {
                 break;
             } else {
                 int prec2;
-                if(opTop.equals("+") || opTop.equals("-")) {
+                if (opTop.equals("+") || opTop.equals("-")) {
                     prec2 = 1;
-                    //now without exponentiation
                 } else if (opTop.equals("^")) {
                     prec2 = 3;
                 } else {
@@ -92,7 +102,11 @@ public class IntToPost {
         stackX.push(opThis);
     }
 
-    public void gotParen(String p) {
+    /**
+     * Method to handle case when we reach closing parenthesis.
+     *
+     */
+    public void gotParen() {
         while (!stackX.isEmpty()) {
             String q = stackX.pop();
             if (q.equals("(")) {

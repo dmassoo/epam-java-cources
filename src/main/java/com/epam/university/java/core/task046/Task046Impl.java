@@ -15,6 +15,9 @@ public class Task046Impl implements Task046 {
      */
     @Override
     public List<String> assembleMatryoshka(Integer k, Integer n) {
+        if (k == null || n == null) {
+            throw new IllegalArgumentException();
+        }
         List<String> combinations = new ArrayList<>();
         int[] numbers = new int[n];
         for (int i = 0; i < n; i++) {

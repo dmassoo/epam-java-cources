@@ -22,8 +22,18 @@ public class Task038Impl implements Task038 {
      */
     @Override
     public Graph invokeActions(Graph sourceGraph, Collection<GraphAction> actions) {
+        if (sourceGraph == null || actions == null) {
+            throw new IllegalArgumentException();
+        }
+        if (actions.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+
         for (GraphAction action : actions) {
             action.run(sourceGraph);
+        }
+        if (((GraphImpl) sourceGraph).getVertices().size() > ((GraphImpl) sourceGraph).getSize()) {
+            throw new IllegalArgumentException();
         }
         return sourceGraph;
     }
@@ -41,6 +51,9 @@ public class Task038Impl implements Task038 {
     */
     @Override
     public Collection<Vertex> getShortestPath(Graph graph, int startId, int endId) {
+        if (graph == null) {
+            throw new IllegalArgumentException();
+        }
         return dijkstra((GraphImpl) graph, startId, endId);
     }
 
